@@ -21,7 +21,7 @@ class Program
         //*Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"/new_folder" + @"/test_folder");
 
         //? Удаление файла
-        Directory.Delete(Directory.GetCurrentDirectory(), true);
+        //*Directory.Delete(Directory.GetCurrentDirectory() + @"/new_folder", true);
 
         //? Возвращает текущие местоположение
         //*Console.WriteLine(Directory.GetCurrentDirectory());
