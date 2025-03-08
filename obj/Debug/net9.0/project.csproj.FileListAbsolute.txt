@@ -1,0 +1,15 @@
+C:\Users\rilUnreal\Documents\project\bin\Debug\net9.0\project.exe
+C:\Users\rilUnreal\Documents\project\bin\Debug\net9.0\project.deps.json
+C:\Users\rilUnreal\Documents\project\bin\Debug\net9.0\project.runtimeconfig.json
+C:\Users\rilUnreal\Documents\project\bin\Debug\net9.0\project.dll
+C:\Users\rilUnreal\Documents\project\bin\Debug\net9.0\project.pdb
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\project.AssemblyInfoInputs.cache
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\project.AssemblyInfo.cs
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\project.csproj.CoreCompileInputs.cache
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\project.sourcelink.json
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\project.dll
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\refint\project.dll
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\project.pdb
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\project.genruntimeconfig.cache
+C:\Users\rilUnreal\Documents\project\obj\Debug\net9.0\ref\project.dll

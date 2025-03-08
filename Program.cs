@@ -1,36 +1,38 @@
-﻿namespace project;
+﻿using System;
 
-class Program
+namespace ConsoleApp
 {
-    static void Main(string[] args)
+    public class Program
     {
-        string path = @"C:\XboxGames";
-        
-        //? Вывод всех файлов в каталоге
-        var files = Directory.GetFiles(path);
-        foreach (string file in files) Console.WriteLine(file);
+        public static void Main(string[] args)
+        {
+            string folder = @"C:\Users\rilUnreal\Documents\file is project";
 
-        //? Вывод всех папок в каталоге 
-        var dirs = Directory.GetDirectories(path);
-        foreach (string dir in dirs) Console.WriteLine(dir);
+            DirectoryInfo directoryInfo = new DirectoryInfo(folder);
 
-        //? Копирование файла
-        //* File.Copy(path_from, path_to);
+            if (directoryInfo.Exists)
+            {
+                Console.WriteLine($"Имя директории: {directoryInfo.Name}");
 
-        //? Создание пустой папки 
-        //*Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"/new_folder" + @"/test_folder");
+                //? Список файлов в каталоге
+                FileInfo[] files = directoryInfo.GetFiles();
+                Console.WriteLine($"Файлы в каталоге: {files.Length}");
+                foreach (var file in files)
+                {
+                    Console.WriteLine($"\tФайл: {file.Name}, Размер: {file.Length} байт");
+                }
 
-        //? Удаление файла
-        //*Directory.Delete(Directory.GetCurrentDirectory() + @"/new_folder", true);
+                //? Получение спика каталогов
+                DirectoryInfo[] subDirectories = directoryInfo.GetDirectories();
+                Console.WriteLine($"Подкаталоги: {directoryInfo.Name}");
 
-        //? Возвращает текущие местоположение
-        //*Console.WriteLine(Directory.GetCurrentDirectory());
-
-
-
-
+                //? Удаление файлов
+                Directory.Delete(@"C:\Users\rilUnreal\Documents\file is project" + @"\test folder 1", true);
+            }
+            else
+            {
+                Console.WriteLine("Такого файла не существует");
+            }
+        }
     }
 }
-
-
-//! До 14.03.2025
