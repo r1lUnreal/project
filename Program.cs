@@ -39,7 +39,39 @@ namespace ConsoleApp
                 Console.WriteLine($"Подкаталоги: {directoryInfo.Name}");
 
                 //? Удаление файлов
-                //*Directory.Delete(@"C:\Users\rilUnreal\Documents\file is project" + @"\test folder 1", true);
+                Console.WriteLine("__________________________________");
+                Console.WriteLine("Хотите удалить папку? ");
+                Console.WriteLine("1 = yes | 2 = no");
+                int delFolder = int.Parse(Console.ReadLine());
+
+                if (delFolder == 1)
+                {   
+                    Console.WriteLine("Какую?");
+                    Console.WriteLine("1. test folder 1");
+                    Console.WriteLine("2. test folder 2");
+
+                    int question = int.Parse(Console.ReadLine());
+
+                    if (question == 1)
+                    {
+                        Directory.Delete(@"C:\Users\rilUnreal\Documents\file is project\test folder 1", true);
+                        Console.WriteLine("Вы изничтожили папку: test folder 1");
+                    }
+                    else if (question == 2)
+                    {
+                        Directory.Delete(@"C:\Users\rilUnreal\Documents\file is project\test folder 2");
+                        Console.WriteLine("Вы изничтожили папку: test folder 2");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Такой папки нема :(");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Ваша папка жива и здорова");
+                }
+                
             }
             else
             {
