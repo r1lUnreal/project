@@ -1,96 +1,101 @@
-﻿using System;
+﻿﻿using System;
 
 namespace ConsoleApp
 {
-    public class Program
+    //? ООП
+    public class FileManager
     {
-        public static void Main(string[] args)
+        private readonly DirectoryInfo _directoryInfo;
+
+        //? Конструктор принимающий путь к папке
+        public FileManager(string folderPath)
         {
-            string folder = @"C:\Users\rilUnreal\Documents\file is project";
+            _directoryInfo = new DirectoryInfo(folderPath);
 
-            DirectoryInfo directoryInfo = new DirectoryInfo(folder);
-
-            if (directoryInfo.Exists)
+            if (!_directoryInfo.Exists)
             {
-                Console.WriteLine($"Имя директории: {directoryInfo.Name}");
-
-                //? Размер каталога
-                long folderSize = CalculateFolderSize(directoryInfo);
-                Console.WriteLine($"Размер каталога: {folderSize} байт");
-
-                //? Список файлов в каталоге
-                FileInfo[] files = directoryInfo.GetFiles();
-                Console.WriteLine($"Файлы в каталоге: {files.Length}");
-                foreach (var file in files)
-                {
-                    Console.WriteLine($"\tФайл: {file.Name}, Размер: {file.Length} байт");
-                }
-
-                //? Список папок в каталоге
-                DirectoryInfo[] folders = directoryInfo.GetDirectories();
-                Console.WriteLine($"Папки в каталоге: {folders.Length}");
-                foreach (var dir in folders)
-                {
-                    Console.WriteLine($"\tПапка: {dir.Name}");
-                }
-
-                //? Получение спика каталогов
-                DirectoryInfo[] subDirectories = directoryInfo.GetDirectories();
-                Console.WriteLine($"Подкаталоги: {directoryInfo.Name}");
-
-                //? Удаление файлов
-                Console.WriteLine("__________________________________");
-                Console.WriteLine("Хотите удалить папку? ");
-                Console.WriteLine("1 = yes | 2 = no");
-                int delFolder = int.Parse(Console.ReadLine());
-
-                if (delFolder == 1)
-                {   
-                    Console.WriteLine("Какую?");
-                    Console.WriteLine("1. test folder 1");
-                    Console.WriteLine("2. test folder 2");
-
-                    int question = int.Parse(Console.ReadLine());
-
-                    if (question == 1)
-                    {
-                        Directory.Delete(@"C:\Users\rilUnreal\Documents\file is project\test folder 1", true);
-                        Console.WriteLine("Вы изничтожили папку: test folder 1");
-                    }
-                    else if (question == 2)
-                    {
-                        Directory.Delete(@"C:\Users\rilUnreal\Documents\file is project\test folder 2");
-                        Console.WriteLine("Вы изничтожили папку: test folder 2");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Такой папки нема :(");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Ваша папка жива и здорова");
-                }
-                
-            }
-            else
-            {
-                Console.WriteLine("Такого файла не существует");
+                throw new DirectoryNotFoundException("Такой папки у меня нету");
             }
         }
 
-        //? Функция для расчёта размера каталога
-        public static long CalculateFolderSize(DirectoryInfo directory)
+        //? Вывод всех файлов и папок
+        public void ShowFilesInFolder()
+        {
+            //? Размер каталога
+            long folderSize = CalculateFolderSize(_directoryInfo);
+            Console.WriteLine($"Размер каталога: {folderSize} байт");
+            
+            //? Список файлов в каталоге и их размер
+            FileInfo[] files = _directoryInfo.GetFiles();
+            Console.WriteLine($"Файлы в каталоге: {files.Length}");
+            foreach (var file in files)
+            {
+                Console.WriteLine($"\tФайл: {file.Name}, Размер: {file.Length} байт");
+            }
+
+            //? Список папок в каталоге
+            DirectoryInfo[] folders = _directoryInfo.GetDirectories();
+            Console.WriteLine($"Папки в каталоге: {folders.Length}");
+            foreach (var dir in folders)
+            {
+                Console.WriteLine($"\tПапка: {dir.Name}");
+            }
+        }
+
+        //? Копирование файлов
+        public void CopyFile(string fileName, string destinationPath)
+        {
+            FileInfo fileToCopy = new FileInfo(Path.Combine(_directoryInfo.FullName, fileName));
+            if (!fileToCopy.Exists)
+            {
+                Console.WriteLine("Такого файла у меня нету");
+                return;
+            }
+
+            try
+            {
+                fileToCopy.CopyTo(destinationPath, true);
+                Console.WriteLine("Ты скопировал файл");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        //? Удаление файлов
+        public void DeleteFile(string fileName)
+        {
+            FileInfo fileToDelete = new FileInfo(Path.Combine(_directoryInfo.FullName, fileName));
+            if (!fileToDelete.Exists)
+            {
+                Console.WriteLine("Такого файла у меня нету");
+                return;
+            }
+
+            try
+            {
+                fileToDelete.Delete();
+                Console.WriteLine("Ты удалил файл");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        //? Размер каталога
+        private static long CalculateFolderSize(DirectoryInfo directory)
         {
             long size = 0;
 
-            //? Суммирование всех файлов в каталоге
+            //? Суммирование всех файлов
             foreach (FileInfo file in directory.GetFiles())
             {
                 size += file.Length;
             }
 
-            //? Рекурсивное суммирование всех подкаталогов
+            //? Суммирование всех подкаталогов
             foreach (DirectoryInfo dir in directory.GetDirectories())
             {
                 size += CalculateFolderSize(dir);
@@ -99,6 +104,67 @@ namespace ConsoleApp
             return size;
         }
     }
-}
 
-// У тоби е эбупрофен? Голова болить
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            string folderPath = @"C:\Users\rilUnreal\Documents\file is project";
+
+            try
+            {
+                FileManager fileManager = new FileManager(folderPath);
+
+                while (true)
+                {
+                    Console.WriteLine("Выберите действие:");
+                    Console.WriteLine("1. Показать файлы в папке");
+                    Console.WriteLine("2. Скопировать файл");
+                    Console.WriteLine("3. Удалить файл");
+                    Console.WriteLine("4. Выйти");
+
+                    if (!int.TryParse(Console.ReadLine(), out int choice))
+                    {
+                        Console.WriteLine("Неверно! Выбери от 1 до 4");
+                        continue;
+                    }
+
+                    if (choice == 1)
+                    {
+                        fileManager.ShowFilesInFolder();
+                    }
+                    else if (choice == 2)
+                    {
+                        Console.WriteLine("Что скопировать:");
+                        string fileNameToCopy = Console.ReadLine();
+                        Console.WriteLine("Куда скопировать:");
+                        string destinationPath = Console.ReadLine();
+                        fileManager.CopyFile(fileNameToCopy, destinationPath);
+                    }
+                    else if (choice == 3)
+                    {
+                        Console.WriteLine("ЧТо удалить:");
+                        string fileNameToDelete = Console.ReadLine();
+                        fileManager.DeleteFile(fileNameToDelete);
+                    }
+                    else if (choice == 4)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неверно! Выбери от 1 до 4");
+                    }
+                }
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+    }
+}
