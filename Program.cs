@@ -1,4 +1,5 @@
 ﻿﻿using System;
+using System.IO;
 
 namespace ConsoleApp
 {
@@ -19,8 +20,16 @@ namespace ConsoleApp
         }
 
         //? Вывод всех файлов и папок
-        public void ShowFilesInFolder()
+        public void ShowFilesInFolder(string way)
         {
+            //? Принятие пути до директории от пользователя
+            var ways = Directory.GetFiles(way);
+            var directorys = Directory.GetDirectories(way);
+            Console.WriteLine(string.Join ("\n", directorys));
+            Console.WriteLine(string.Join ("\n", ways));
+
+            Console.WriteLine("Внизу основная Директория"); // Обозначение для пользователя
+
             //? Размер каталога
             long folderSize = CalculateFolderSize(_directoryInfo);
             Console.WriteLine($"Размер каталога: {folderSize} байт");
@@ -43,9 +52,10 @@ namespace ConsoleApp
         }
 
         //? Копирование файлов
+        //! Требует исправлений
         public void CopyFile(string fileName, string destinationPath)
         {
-            FileInfo fileToCopy = new FileInfo(Path.Combine(_directoryInfo.FullName, fileName));
+            FileInfo fileToCopy = new FileInfo(fileName);
             if (!fileToCopy.Exists)
             {
                 Console.WriteLine("Такого файла у меня нету");
@@ -117,6 +127,7 @@ namespace ConsoleApp
 
                 while (true)
                 {
+                    Console.WriteLine("____________-_-____________________");
                     Console.WriteLine("Выберите действие:");
                     Console.WriteLine("1. Показать файлы в папке");
                     Console.WriteLine("2. Скопировать файл");
@@ -131,7 +142,9 @@ namespace ConsoleApp
 
                     if (choice == 1)
                     {
-                        fileManager.ShowFilesInFolder();
+                        Console.WriteLine("Введите путь к папке:");
+                        string way = Console.ReadLine();
+                        fileManager.ShowFilesInFolder(way);
                     }
                     else if (choice == 2)
                     {
@@ -143,7 +156,7 @@ namespace ConsoleApp
                     }
                     else if (choice == 3)
                     {
-                        Console.WriteLine("ЧТо удалить:");
+                        Console.WriteLine("Что удалить:");
                         string fileNameToDelete = Console.ReadLine();
                         fileManager.DeleteFile(fileNameToDelete);
                     }
