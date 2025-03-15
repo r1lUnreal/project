@@ -25,15 +25,15 @@ namespace ConsoleApp
             //? Принятие пути до директории от пользователя
             var ways = Directory.GetFiles(way);
             var directorys = Directory.GetDirectories(way);
-            Console.WriteLine(string.Join ("\n", directorys));
-            Console.WriteLine(string.Join ("\n", ways));
+            Console.WriteLine(string.Join("\n", directorys));
+            Console.WriteLine(string.Join("\n", ways));
 
             Console.WriteLine("Внизу основная Директория"); // Обозначение для пользователя
 
             //? Размер каталога
             long folderSize = CalculateFolderSize(_directoryInfo);
             Console.WriteLine($"Размер каталога: {folderSize} байт");
-            
+
             //? Список файлов в каталоге и их размер
             FileInfo[] files = _directoryInfo.GetFiles();
             Console.WriteLine($"Файлы в каталоге: {files.Length}");
@@ -53,23 +53,40 @@ namespace ConsoleApp
 
         //? Копирование файлов
         //! Требует исправлений
-        public void CopyFile(string fileName, string destinationPath)
+        public void CopyFile(string sourceFileName, string destinationPath)
         {
-            FileInfo fileToCopy = new FileInfo(fileName);
-            if (!fileToCopy.Exists)
+            //? Полный путь к исходному файлу
+            string sourceFilePath = Path.Combine(_directoryInfo.FullName, sourceFileName);
+
+            //? Проверка существования исходного файла
+            if (!File.Exists(sourceFilePath))
             {
-                Console.WriteLine("Такого файла у меня нету");
+                Console.WriteLine("Файл не найден в текущей директории.");
                 return;
+            }
+
+            //? Проверка, является ли destinationPath директорией или полным путем к файлу
+            string destinationFilePath;
+            if (Directory.Exists(destinationPath))
+            {
+                //? Если destinationPath — это директория, создаем полный путь к файлу
+                destinationFilePath = Path.Combine(destinationPath, sourceFileName);
+            }
+            else
+            {
+                //? Если destinationPath — это полный путь к файлу, используем его
+                destinationFilePath = destinationPath;
             }
 
             try
             {
-                fileToCopy.CopyTo(destinationPath, true);
-                Console.WriteLine("Ты скопировал файл");
+                //? Копирование файла
+                File.Copy(sourceFilePath, destinationFilePath, overwrite: true);
+                Console.WriteLine($"Файл успешно скопирован в: {destinationFilePath}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Ошибка при копировании файла: {ex.Message}");
             }
         }
 
