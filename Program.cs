@@ -32,14 +32,14 @@ namespace ConsoleApp
 
             //? Размер каталога
             long folderSize = CalculateFolderSize(_directoryInfo);
-            Console.WriteLine($"Размер каталога: {folderSize} байт");
+            Console.WriteLine($"Размер каталога: {folderSize / 1024.0:F2} кб"); //? Преобразование из Байт в КилоБайт
 
             //? Список файлов в каталоге и их размер
             FileInfo[] files = _directoryInfo.GetFiles();
             Console.WriteLine($"Файлы в каталоге: {files.Length}");
             foreach (var file in files)
             {
-                Console.WriteLine($"\tФайл: {file.Name}, Размер: {file.Length} байт");
+                Console.WriteLine($"\tФайл: {file.Name}, Размер: {file.Length / 1024.0:F2} кб"); //? Преобразование из Байт в КилоБайт
             }
 
             //? Список папок в каталоге
