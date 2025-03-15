@@ -161,30 +161,33 @@ namespace ConsoleApp
                     Console.WriteLine("========================================");
                     Console.ResetColor();
 
-
+                    Console.Write("Выберите действие: ");
                     if (!int.TryParse(Console.ReadLine(), out int choice))
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Неверно! Выбери от 1 до 4");
+                        Console.ResetColor();
+                        Console.ReadKey();
                         continue;
                     }
 
                     if (choice == 1)
                     {
-                        Console.WriteLine("Введите путь к папке:");
+                        Console.Write("Введите путь к папке: ");
                         string way = Console.ReadLine()!;
                         fileManager.ShowFilesInFolder(way);
                     }
                     else if (choice == 2)
                     {
-                        Console.WriteLine("Что скопировать:");
+                        Console.Write("Что скопировать: ");
                         string fileNameToCopy = Console.ReadLine()!;
-                        Console.WriteLine("Куда скопировать:");
+                        Console.Write("Куда скопировать: ");
                         string destinationPath = Console.ReadLine()!;
                         fileManager.CopyFile(fileNameToCopy, destinationPath);
                     }
                     else if (choice == 3)
                     {
-                        Console.WriteLine("Что удалить:");
+                        Console.Write("Что удалить: ");
                         string fileNameToDelete = Console.ReadLine()!;
                         fileManager.DeleteFile(fileNameToDelete);
                     }
@@ -194,8 +197,13 @@ namespace ConsoleApp
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Неверно! Выбери от 1 до 4");
+                        Console.ResetColor();
                     }
+
+                    Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                    Console.ReadKey();
                 }
             }
             catch (DirectoryNotFoundException ex)
