@@ -24,8 +24,8 @@ namespace ConsoleApp
         {
             //? Принятие пути до директории от пользователя
             var ways = Directory.GetFiles(way);
-            var directorys = Directory.GetDirectories(way);
-            Console.WriteLine(string.Join("\n", directorys));
+            var directories = Directory.GetDirectories(way);
+            Console.WriteLine(string.Join("\n", directories));
             Console.WriteLine(string.Join("\n", ways));
 
             Console.WriteLine("Внизу основная Директория"); // Обозначение для пользователя
@@ -52,7 +52,6 @@ namespace ConsoleApp
         }
 
         //? Копирование файлов
-        //! Требует исправлений
         public void CopyFile(string sourceFileName, string destinationPath)
         {
             //? Полный путь к исходному файлу
@@ -136,7 +135,7 @@ namespace ConsoleApp
     {
         public static void Main(string[] args)
         {
-            string folderPath = @"C:\Users\rilUnreal\Documents\file is project";
+            string folderPath = @"C:\Users\rilUnreal\Documents\file is project"; //? Дефолтная папка
 
             try
             {
@@ -144,12 +143,24 @@ namespace ConsoleApp
 
                 while (true)
                 {
-                    Console.WriteLine("____________-_-____________________");
-                    Console.WriteLine("Выберите действие:");
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("========================================");
+                    Console.WriteLine("          Менеджер файлов");
+                    Console.WriteLine("========================================");
+                    Console.ResetColor();
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("1. Показать файлы в папке");
                     Console.WriteLine("2. Скопировать файл");
                     Console.WriteLine("3. Удалить файл");
                     Console.WriteLine("4. Выйти");
+                    Console.ResetColor();
+
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("========================================");
+                    Console.ResetColor();
+
 
                     if (!int.TryParse(Console.ReadLine(), out int choice))
                     {
@@ -160,21 +171,21 @@ namespace ConsoleApp
                     if (choice == 1)
                     {
                         Console.WriteLine("Введите путь к папке:");
-                        string way = Console.ReadLine();
+                        string way = Console.ReadLine()!;
                         fileManager.ShowFilesInFolder(way);
                     }
                     else if (choice == 2)
                     {
                         Console.WriteLine("Что скопировать:");
-                        string fileNameToCopy = Console.ReadLine();
+                        string fileNameToCopy = Console.ReadLine()!;
                         Console.WriteLine("Куда скопировать:");
-                        string destinationPath = Console.ReadLine();
+                        string destinationPath = Console.ReadLine()!;
                         fileManager.CopyFile(fileNameToCopy, destinationPath);
                     }
                     else if (choice == 3)
                     {
                         Console.WriteLine("Что удалить:");
-                        string fileNameToDelete = Console.ReadLine();
+                        string fileNameToDelete = Console.ReadLine()!;
                         fileManager.DeleteFile(fileNameToDelete);
                     }
                     else if (choice == 4)
@@ -189,15 +200,16 @@ namespace ConsoleApp
             }
             catch (DirectoryNotFoundException ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message);
+                Console.ResetColor();
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Error: {ex.Message}");
+                Console.ResetColor();
             }
         }
     }
 }
-
-
-//TODO Version 1.5
