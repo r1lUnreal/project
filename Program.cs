@@ -1,5 +1,6 @@
 ﻿﻿using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace ConsoleApp
 {
@@ -52,15 +53,26 @@ namespace ConsoleApp
         }
 
         //? Копирование файлов
-        public void CopyFile(string sourceFileName, string destinationPath)
+        public void CopyFile(string sourceFileNameOrPath, string destinationPath)
         {
-            //? Полный путь к исходному файлу
-            string sourceFilePath = Path.Combine(_directoryInfo.FullName, sourceFileName);
+            string sourceFilePath;
+
+            //? Проверка, является ли sourceFileNameOrPath абсолютным путем
+            if (Path.IsPathRooted(sourceFileNameOrPath))
+            {
+                //? Если это абсолютный путь, используем его
+                sourceFilePath = sourceFileNameOrPath;
+            }
+            else
+            {
+                //? Если это относительный путь, добавляем его к начальной директории
+                sourceFilePath = Path.Combine(_directoryInfo.FullName, sourceFileNameOrPath);
+            }
 
             //? Проверка существования исходного файла
             if (!File.Exists(sourceFilePath))
             {
-                Console.WriteLine("Файл не найден в текущей директории.");
+                Console.WriteLine("Файл не найден.");
                 return;
             }
 
@@ -69,7 +81,8 @@ namespace ConsoleApp
             if (Directory.Exists(destinationPath))
             {
                 //? Если destinationPath — это директория, создаем полный путь к файлу
-                destinationFilePath = Path.Combine(destinationPath, sourceFileName);
+                string fileName = Path.GetFileName(sourceFilePath);
+                destinationFilePath = Path.Combine(destinationPath, fileName);
             }
             else
             {
