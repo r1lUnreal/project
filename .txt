@@ -1,6 +1,8 @@
-﻿﻿using System;
+using System;
 using System.IO;
 using System.Diagnostics;
+
+//! Надо исправить код. Хочу чтобы 1 делал красиво и не трогал дефолтную папку
 
 namespace ConsoleApp
 {
@@ -21,18 +23,24 @@ namespace ConsoleApp
         }
 
         //? Вывод всех файлов и папок
-        public void ShowFilesInFolder()
+        public void ShowFilesInFolder(string way)
         {
+            //? Принятие пути до директории от пользователя
+            var ways = Directory.GetFiles(way);
+            var directories = Directory.GetDirectories(way);
+            Console.WriteLine(string.Join("\n", directories));
+            Console.WriteLine(string.Join("\n", ways));
+
             //? Размер каталога
             long folderSize = CalculateFolderSize(_directoryInfo);
-            Console.WriteLine($"Размер каталога: {folderSize / 1024.0:F2} кб"); // Преобразование из Байт в КилоБайт
+            Console.WriteLine($"Размер каталога: {folderSize / 1024.0:F2} кб"); //? Преобразование из Байт в КилоБайт
 
             //? Список файлов в каталоге и их размер
             FileInfo[] files = _directoryInfo.GetFiles();
             Console.WriteLine($"Файлы в каталоге: {files.Length}");
             foreach (var file in files)
             {
-                Console.WriteLine($"\tФайл: {file.Name}, Размер: {file.Length / 1024.0:F2} кб"); // Преобразование из Байт в КилоБайт
+                Console.WriteLine($"\tФайл: {file.Name}, Размер: {file.Length / 1024.0:F2} кб"); //? Преобразование из Байт в КилоБайт
             }
 
             //? Список папок в каталоге
@@ -140,7 +148,7 @@ namespace ConsoleApp
     {
         public static void Main(string[] args)
         {
-            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); //? Дефолтная папка "Документы"
+            string folderPath = @"C:\Users\rilUnreal\Documents\file is project"; // Дефолтная папка
 
             try
             {
@@ -156,7 +164,6 @@ namespace ConsoleApp
                     Console.ResetColor();
 
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    //Console.WriteLine($"Текущая папка: {folderPath}");
                     Console.WriteLine("1. Показать файлы в папке");
                     Console.WriteLine("2. Скопировать файл");
                     Console.WriteLine("3. Удалить файл");
@@ -180,26 +187,8 @@ namespace ConsoleApp
                     if (choice == 1)
                     {
                         Console.Write("Введите путь к папке: ");
-                        string userFolderPath = Console.ReadLine()!;
-
-                        try
-                        {
-                            //? Создаем новый экземпляр FileManager с введенным пользователем путем
-                            FileManager userFileManager = new FileManager(userFolderPath);
-                            userFileManager.ShowFilesInFolder();
-                        }
-                        catch (DirectoryNotFoundException ex)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine(ex.Message);
-                            Console.ResetColor();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine($"Ошибка: {ex.Message}");
-                            Console.ResetColor();
-                        }
+                        string way = Console.ReadLine()!;
+                        fileManager.ShowFilesInFolder(way);
                     }
                     else if (choice == 2)
                     {
@@ -239,7 +228,7 @@ namespace ConsoleApp
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Ошибка: {ex.Message}");
+                Console.WriteLine($"Error: {ex.Message}");
                 Console.ResetColor();
             }
         }
